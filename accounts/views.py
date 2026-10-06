@@ -6,11 +6,6 @@ from .models import CustomUser
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-# Create your views here.
-
-
-
-
 class SignUpView(APIView):
     permission_classes = [permissions.AllowAny]
     def post(self, request):
@@ -36,11 +31,11 @@ class ProfilView(APIView):
         user = request.user
 
         return Response({
-            'msg': 'porfil ',
+            'msg': 'Profil',
             'status': status.HTTP_200_OK,
             'user':{
                 'id': user.id,
-                'username': user.usrename,
+                'username': user.username,
                 'address': user.address,
                 'first_name':user.first_name,
                 'last_name':user.last_name,
@@ -50,7 +45,7 @@ class ProfilView(APIView):
             }
         })
 
-class PaswordChangView(APIView):
+class PasswordChangeView(APIView):
     def patch(self, request):
         serilazers = PasswordChangeSerilazer(instance = request.user , data = request.data , partial = True, context={"request": request})
         serilazers.is_valid(raise_exception=True)
@@ -76,7 +71,7 @@ class TokenRefresh(APIView):
         refresh_token = RefreshToken(refresh)
 
         return Response({
-            'accsess_token': str(refresh_token.access_token)
+            'access_token': str(refresh_token.access_token)
         })
     
 
@@ -90,6 +85,6 @@ class LogoutView(APIView):
         serializer.save()
 
         return Response(
-            {"message": "Logout muvaffaqiyatli bajarildi."},
+            {"message": "Tizimdan muvaffaqiyatli chiqildi."},
             status=status.HTTP_200_OK
         )

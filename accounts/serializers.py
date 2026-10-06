@@ -20,13 +20,13 @@ class  SignUpSerilazer(serializers.ModelSerializer):
     def validate_password(self, value):
         if len(value) < 8:
             raise ValidationError({
-                "msg": "Parol kamida 8 ta belgidan iborat bo'lishi kerak.",
+                "msg": "Parol kamida 8 ta belgidan iborat bo'lishi shart.",
                 "status": status.HTTP_400_BAD_REQUEST
             })
 
         if value[0].isdigit():
             raise ValidationError({
-                "msg": "Parol boshida raqam bo'lishi mumkin emas.",
+                "msg": "Parol raqam bilan boshlanishi mumkin emas.",
                 "status": status.HTTP_400_BAD_REQUEST
             })
 
@@ -53,7 +53,7 @@ class  SignUpSerilazer(serializers.ModelSerializer):
         users =  super().to_representation(instance)
 
         users['status']= status.HTTP_201_CREATED
-        users['msg'] = 'Muvafaqiyatli yaratildi '
+        users['msg'] = 'User muaffaqiyatli yaratildi'
         return users
 
 class LoginSerializer(serializers.Serializer):
@@ -100,7 +100,7 @@ class PasswordChangeSerilazer(serializers.Serializer):
             if old_pass and new_pass and conf_pass and new_pass == old_pass:
 
                 raise ValidationError({
-                    'msg': 'Yangi parol eskisi bilan mos bolmasligi kerak',
+                    'msg': "Yangi parol eskisi bilan bir xil bo'lishi mumkin emas",
                     'status': status.HTTP_400_BAD_REQUEST
                 })
             
@@ -118,7 +118,7 @@ class PasswordChangeSerilazer(serializers.Serializer):
 
             if not user:
                 raise ValidationError({
-                        'msg': 'Eski parol hato',
+                        'msg': 'Eski parol xato',
                         'status': status.HTTP_400_BAD_REQUEST
                     })
         
@@ -135,7 +135,7 @@ class PasswordChangeSerilazer(serializers.Serializer):
 
     def to_representation(self, instance):
         return{
-            'msg': 'Parollar ozgartirildi',
+            'msg': "Parollar o'zgartirildi",
             'status': status.HTTP_200_OK
         }
     
@@ -157,7 +157,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         
         if CustomUser.objects.filter(username=username).exists():
             raise ValidationError({
-                'msg': "Basada bu username bilan user mavjud!",
+                'msg': "Bazada bu username mavjud!",
                 'status': status.HTTP_400_BAD_REQUEST
             })
         
@@ -175,7 +175,7 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         
         return {
-            'msg': 'Profile yangilandi!',
+            'msg': 'Profil yangilandi!',
             'status': status.HTTP_200_OK,
             'data': instance.validated_data
         }
